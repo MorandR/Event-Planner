@@ -1,0 +1,28 @@
+{
+  "name": "event-planner",
+  "version": "1.0.0",
+  "description": "Make an event-planner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorandR/Event-Planner.git"
+  },
+  "author": "Austin A",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MorandR/Event-Planner/issues"
+  },
+  "homepage": "https://github.com/MorandR/Event-Planner#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
