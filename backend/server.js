@@ -13,6 +13,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+// imports all of the api's for a user.
 app.use('/api/user', require('./routes/userRoutes'))
 
 app.use(errorHandler)
