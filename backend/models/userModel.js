@@ -17,4 +17,14 @@ const userSchema = mongoose.Schema({
     timestamps: true
 })
 
+// validator that we could use later on:
+// password:{
+//     type:String,
+//     required:[true, "Password is a required field"],
+
+// validate: {
+//   validator: validator.isLength(value,{min:6,max:1000}),
+//   message: "Length of the password should be between 6-1000"
+// }
+
 module.exports = mongoose.model('User', userSchema)
