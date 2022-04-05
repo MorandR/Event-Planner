@@ -40,7 +40,7 @@ const createUser = asyncHandler(async(req, res) => {
     // inefficient email or username taken check.
     await User.findOne({$or: [{email: req.body.email}, {username: req.body.username}]}).then((userFound) => 
     {
-
+        // later, change this to detect if its the email or username already being used.
         if (userFound)
         {
             return res.status(400).json({error: "Email or username already registered."})
@@ -51,7 +51,8 @@ const createUser = asyncHandler(async(req, res) => {
             const newUser = new User({
                 username: req.body.username,
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                userLevel: 'student'
             });
             
             newUser.save()
@@ -75,7 +76,8 @@ const updateUser = asyncHandler(async(req, res) => {
     }
 
     // finds by parameter 'id', uses the body of the request, and if not found, creates a User.
-    let updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    let updatedUser = await User.findByIdAndUpdate
+    (req.params.id, req.body, {runValidators: true, returnOriginal: false, useFindAndModify: false})
 
     res.status(200).json(updatedUser)
 })

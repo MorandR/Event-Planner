@@ -7,11 +7,18 @@ const userSchema = mongoose.Schema({
     },                      // to show a message such as [true, 'Please add an email']
     username: {
         type: String,
-        required: [true]
+        required: [true],
+        immutable: true
     },
     password: {
         type: String,
         required: [true]
+    },
+    userLevel:
+    {
+        type: String,
+        enum: ['student', 'admin', 'super admin'],
+        default: 'student'
     }
 }, {
     timestamps: true
