@@ -8,25 +8,34 @@ const User = require('../models/userModel')
 // GET req. grabs user info and logs them in if correct info is given.
 const loginUser = asyncHandler(async(req, res) => {
     // use await since this is an asynchronous event.
-    const user = await User.find();
+    // check if user exists then handle cases. assigning result to variable for easier parsing w/ mongoose.
+    let thisUser = await User.findOne({username:req.body.username})
 
-    var errMsg = ''
-
-    // if username or password is not present.
-    if (!req.body.username || !req.body.password)
-    {
-        res.status(400)
-        errMsg = "'username' or 'password' field not found."
-        throw new Error(errMsg)
+    if (thisUser)
+    {   // can login since the user was found and password matches.
+        if (thisUser.password === req.body.password)
+            {
+                return res.status(200).json({message: 'Login successful'})
+            }
+        else
+        {
+            return res.status(403).json({message: 'User not found or incorrect login credentials.'})
+        }
     }
-    res.status(200).json({message: "Login success."})
+    // user was not found.
+    else
+    {
+        return res.status(404).json({message: 'User not found or incorrect login credentials.'})
+    }
+
 })
 
 // POST req. to create a user. /api/createUser
 const createUser = asyncHandler(async(req, res) => {
 
     // first check if the email is registered:
-    User.findOne({email: req.body.email}).then((userFound) => {
+    await User.findOne({email: req.body.email}).then((userFound) => 
+    {
         if (userFound)
         {
             return res.status(400).json({error: "Email already registered."})
