@@ -4,12 +4,14 @@ const dotenv = require('dotenv').config()
 const {errorHandler} = require('./middleWare/errorMiddleware')
 const port = process.env.PORT || 5000
 const connectDB = require('./config/db')
+const cors = require('cors')
 
 connectDB()
 
 const app = express()
 
-// middleware to use .body
+// middleware to use .body and cors to access server.
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 

@@ -30,7 +30,7 @@ export default function RegisterPage(props) {
     console.log(data);
     
     axios
-    .post("http://localhost:3000/api/user/", data)
+    .post("http://localhost:5000/api/user/", data)
     .then((res) => {
       console.log(res);
     })
