@@ -33,6 +33,15 @@ const loginUser = asyncHandler(async(req, res) => {
 // POST req. to create a user. /api/user
 const createUser = asyncHandler(async(req, res) => {
 
+    // if userCheck isn't null, found an already existing user.
+    // let userCheck = await User.findOne({$or: [{email: req.body.email}, {username: req.body.username}]})
+    // if (userCheck)
+    // {
+        
+    // }
+    
+    // return res.status(200).json(userCheck)
+
     // rudimentary missing info check.
     if (!req.body.username || !req.body.email || !req.body.password)
         return res.status(400).json({Error: 'Incorrect info'})
@@ -52,7 +61,7 @@ const createUser = asyncHandler(async(req, res) => {
                 username: req.body.username,
                 email: req.body.email,
                 password: req.body.password,
-                userLevel: 'student'
+                userLevel: req.body.userLevel
             });
             
             newUser.save()

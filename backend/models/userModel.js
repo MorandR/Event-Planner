@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
     {
         type: String,
         enum: ['student', 'admin', 'super admin'],
-        default: 'student'
+        immutable: true
     }
 }, {
     timestamps: true
