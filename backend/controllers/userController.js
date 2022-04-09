@@ -9,6 +9,7 @@ const User = require('../models/userModel')
 const loginUser = asyncHandler(async(req, res) => {
     // use await since this is an asynchronous event.
     // check if user exists then handle cases. assigning result to variable for easier parsing w/ mongoose.
+    console.log("This is a get api")
     let thisUser = await User.findOne({username:req.body.username})
 
     if (thisUser)
@@ -33,6 +34,8 @@ const loginUser = asyncHandler(async(req, res) => {
 // POST req. to create a user. /api/user
 const createUser = asyncHandler(async(req, res) => {
 
+
+    console.log("we made it")
     // rudimentary missing info check.
     if (!req.body.username || !req.body.email || !req.body.password)
         return res.status(400).json({Error: 'Incorrect info'})
