@@ -5,13 +5,13 @@ import './App.scss';
 
 function App() {
 
-  console.log("Chieck");
-
+  console.log("Check");
 
   return (
 
     <Router>
       <Routes>
+         <Route path="/" element={<LoginPage/>}/>
          <Route path="/login" element={<LoginPage/>}/>
          <Route path="/register" element={<RegisterPage/>}/>
 
