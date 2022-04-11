@@ -1,36 +1,69 @@
 import {
-    Avatar,
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Grid,
-    Link,
-    TextField
-  } from "@mui/material";
-  // import LockIcon from "@mui/icons-material/Lock";
-  import RegisterPage from "./RegisterPage";
-  
-  import CustomButton from "../UI/Button";
-  
-  export default function LoginPage(props) {
-    return (
-      <Grid sx={{height: '100vh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+  Avatar,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+} from "@mui/material";
+// import LockIcon from "@mui/icons-material/Lock";
+import RegisterPage from "./RegisterPage";
+
+import CustomButton from "../UI/Button";
+
+export default function LoginPage(props) {
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleLogin = (event) => {
+    event.preventDefault(); // prevents screen from reloading, which is set to default
+
+    const data = {
+      email: email,
+      password: password,
+    };
+
+    console.log("Enter Response");
+    console.log(data);
+
+    axios
+      .post("http://localhost:5000/api/login/", data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log("ERROR");
+        console.log(error);
+      });
+  };
+
+  return (
+    <Grid
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Box
         sx={{
           flexDirection: "row",
           alignItems: "center",
           borderStyle: "solid",
           borderColor: "red",
-          width: 300
+          width: 300,
         }}
       >
         <Grid container justifyContent="center" alignItems="center">
-          <Avatar sx={{ bgcolor: "primary.main" }}>
-          </Avatar>
+          <Avatar sx={{ bgcolor: "primary.main" }}></Avatar>
         </Grid>
         <Box
           component="form"
-          onSubmit={props.handleSubmit}
+          onSubmit={handleLogin}
           noValidate
           sx={{
             display: "flex",
@@ -100,7 +133,6 @@ import {
           </Link>
         </Box>
       </Box>
-      </Grid>
-    );
-  }
-  
+    </Grid>
+  );
+}
