@@ -41,4 +41,44 @@ router.post('/register', async (req, res, next) => {
     )
 });
 
+router.post('/login', async (req, res, next) => {
+    db.query(
+        // checks is user email exists.
+        `SELECT * FROM users WHERE LOWER(email) = LOWER(
+            ${db.escape(req.body.email)})`,
+        (err, result) => {
+            // if email found, check password.
+            if (result.length) {
+                // if password matches, return a success response.
+                if (result[0].password == req.body.password)
+                {
+                    return res.status(200).send({
+                        msg: 'User logged in.'
+                    })
+                }
+                // info mismatch / user does not exist 
+                else
+                {
+                    return res.status(403).send({
+                        msg: 'Incorrect information.'
+                    })
+                }
+            }
+            else if (err)
+            {
+                return res.status(400).send({
+                    msg: err
+                });
+            }
+            // email not found.
+            else
+            {
+                return res.status(403).send({
+                    msg: 'Incorrect information.'
+                })
+            }
+        }
+    )
+});
+
 module.exports = router;
