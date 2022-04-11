@@ -22,7 +22,7 @@ router.post('/register', async (req, res, next) => {
             }
             // now to insert user with email and password.
             else {
-                db.query(`INSERT INTO users (email, password) VALUES('${req.body.email}', '${req.body.password}')`,
+                db.query(`INSERT INTO users (email, password, userLevel) VALUES('${req.body.email}', '${req.body.password}', '${req.body.userLevel}')`,
                     (err, result) => {
                         if (err) {
                             return res.status(400).send({
