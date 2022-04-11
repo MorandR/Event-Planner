@@ -12,13 +12,12 @@ import RegisterPage from "./RegisterPage";
 import { useState } from "react";
 import CustomButton from "../UI/Button";
 import axios from "axios";
-import { Box } from "@mui/system";
 
 
 export default function LoginPage(props) {
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [remember, setRemember] = useState("");
 
   const handleLogin = (event) => {
     event.preventDefault(); // prevents screen from reloading, which is set to default
@@ -57,7 +56,7 @@ export default function LoginPage(props) {
           flexDirection: "row",
           alignItems: "center",
           borderStyle: "solid",
-          borderColor: "red",
+          borderColor: "black",
           width: 300,
         }}
       >
@@ -83,7 +82,7 @@ export default function LoginPage(props) {
             label="Email Address"
             name="email"
             autoComplete="email"
-            onChange={(event) => props.setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             defaultValue={props.email}
             autoFocus
           />
@@ -95,22 +94,19 @@ export default function LoginPage(props) {
             label="Password"
             type="password"
             autoComplete="current-password"
-            onChange={(event) => props.setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
           />
           <Grid container justifyContent="space-between">
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
               checked={props.remember}
-              onChange={(event) => props.setRemember(event.target.checked)}
+              onChange={(event) => setRemember(event.target.checked)}
             />
             <Link
               href="#"
               variant="body2"
               sx={{ alignSelf: "center" }}
-              onClick={() => {
-                props.setCurrentBox("nopass");
-              }}
             >
               Forgot password?
             </Link>

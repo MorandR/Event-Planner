@@ -55,7 +55,7 @@ export default function RegisterPage(props) {
         flexDirection: "column",
         alignItems: "center",        
         borderStyle: "solid",
-        borderColor: "red"
+        borderColor: "black"
       }}
     >
       <Grid container justifyContent="center" alignItems="center">
