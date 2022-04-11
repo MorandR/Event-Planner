@@ -1,6 +1,6 @@
-import { Avatar, Grid, Link, TextField } from "@mui/material";
+import { Accordion, AccordionSummary, Avatar, Grid, Link, List, ListItem, ListItemButton, ListItemText, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-// import LockIcon from "@mui/icons-material/Lock";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import axios from "axios";
 
@@ -12,7 +12,11 @@ export default function RegisterPage(props) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
-  const userLevel = ["student", "admin", "superadmin"]
+  const userLevel = ["student", "admin", "super admin"]
+  let userSelected = 0;
+
+
+  
 
   const handleRegister = (event) => {
 
@@ -22,7 +26,7 @@ export default function RegisterPage(props) {
       username: username,
       email: email,
       password: password,
-      userLevel: userLevel[0]
+      userLevel: userLevel[userSelected]
     }
 
 
@@ -115,6 +119,39 @@ export default function RegisterPage(props) {
           autoComplete="current-password"
           onChange={(event) => setConfirmPassword(event.target.value)}
         />
+
+        <Accordion>
+          <AccordionSummary
+          expandIcon={<ExpandMoreIcon/>}
+          >
+            <Typography> Select UserLevel </Typography>
+          
+          </AccordionSummary>
+
+          <List>
+
+            <ListItem disablePadding>
+              <ListItemButton
+              onClick={() => {userSelected = 0}}>
+              <ListItemText>Student</ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+              onClick={() => {userSelected = 1}}>
+              <ListItemText>Admin</ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+              onClick={() => {userSelected = 2}}>
+              <ListItemText>Super Admin</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </List>
+
+        </Accordion>
+
         <CustomButton
           type="submit"
           fullWidth

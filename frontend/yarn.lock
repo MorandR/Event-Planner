@@ -1511,6 +1511,13 @@
     "prop-types" "^15.7.2"
     "react-is" "^17.0.2"
 
+"@mui/icons-material@^5.6.0":
+  "integrity" "sha512-2GDGt+/BbwM3oVkF84b9FFKQdQ9TxBJIRnTwT99vO2mimdfJaojxMRB2lkysm9tUY4HOf0yoU6O//X6GTC0Zhw=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.6.0.tgz"
+  "version" "5.6.0"
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+
 "@mui/lab@^5.0.0-alpha.76":
   "integrity" "sha512-MCx6t28L6xo5S3/GXFZqIfXBdFXfCO8UblEb+sf48UREDx1awUDLS7/n0BLC9N6pj6P95OpMx+at25gTSd2CQQ=="
   "resolved" "https://registry.npmjs.org/@mui/lab/-/lab-5.0.0-alpha.76.tgz"
@@ -4662,6 +4669,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@^2.3.2", "fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
