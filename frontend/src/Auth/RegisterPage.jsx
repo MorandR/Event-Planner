@@ -34,7 +34,7 @@ export default function RegisterPage(props) {
     console.log(data);
     
     axios
-    .post("http://localhost:5000/api/user/", data)
+    .post("http://localhost:5000/api/register/", data)
     .then((res) => {
       console.log(res);
     })
@@ -76,16 +76,7 @@ export default function RegisterPage(props) {
           alignItems: "center",
         }}
       >
-         <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="username"
-          label="Username"
-          type="username"
-          autoComplete="username"
-          onChange={(event) => setUsername(event.target.value)}
-        />
+ 
         <TextField
           margin="normal"
           sx={{ borderRadius: 100 }}
