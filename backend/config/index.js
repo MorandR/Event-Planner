@@ -8,18 +8,13 @@ const pool = mysql.createPool({
     port: '3306'
 })
 
-let eventsdb = {};
+pool.getConnection(function(err){
+    if (err){
+        return res.status(400).send({
+            msg: err
+        });
+    }
+    console.log('Database is connected successfully.')
+})
 
-eventsdb.all = () => {
-    return new Promise((resolve, reject) => {
-        pool.query(`SELECT * FROM users`, (err, results) => {
-            if (err){
-                return reject(err);
-            }
-
-            return resolve(results)
-        })
-    })
-};
-
-module.exports = eventsdb
+module.exports = pool
