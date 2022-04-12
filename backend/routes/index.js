@@ -80,7 +80,7 @@ router.post('/register', async (req, res, next) => {
             }
         }
     )
-});
+})
 
 router.post('/login', async (req, res, next) => {
     db.query(
@@ -120,7 +120,7 @@ router.post('/login', async (req, res, next) => {
             }
         }
     )
-});
+})
 
 // this grabs the school_name's from every university to display at the dropdown for registation.
 router.post('/grabUnivNames', async (req, res, next) => {
@@ -159,7 +159,7 @@ router.post('/createEvent', async (req, res, next) => {
                 return res.status(400).send({
                     error: err
                 });
-            } // if no error, return event
+            } // if no error, return result
             else
             {
                 return res.status(200).send({
@@ -168,6 +168,30 @@ router.post('/createEvent', async (req, res, next) => {
                 });
             }
         }
+    )
+})
+
+// needs comment, the_user, the_event_id, user_id
+router.post('/addComment', async (req, res, next) => {
+    db.query(
+        `INSERT into comments (comment, the_user, comment_owner_id, the_event_id)
+            VALUES ('${req.body.comment}', (SELECT email from users where user_id = '${req.body.user_id}'), 
+                    '${req.body.user_id}', '${req.body.the_event_id}')`,
+            (err, result) => {
+                // if an error occurs.
+                if (err) {
+                    return res.status(400).send({
+                        error: err
+                    });
+                } // if no error, return result
+                else
+                {
+                    return res.status(200).send({
+                        msg: result,
+                        error: null
+                    });
+                }
+            }
     )
 })
 
