@@ -123,9 +123,9 @@ router.post('/login', async (req, res, next) => {
 })
 
 // this grabs the school_name's from every university to display at the dropdown for registation.
-router.post('/grabUnivNames', async (req, res, next) => {
+router.get('/grabUnivNames', async (req, res, next) => {
     db.query(
-        // first checks if the email already exists.
+        // selects all school names from university table.
         `SELECT school_name FROM university`,
         (err, result) => {
             // if an error occurs.
@@ -146,7 +146,7 @@ router.post('/grabUnivNames', async (req, res, next) => {
 
 // creates an event given the:
 // date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
-router.post('/createEvent', async (req, res, next) => {
+router.put('/createEvent', async (req, res, next) => {
     db.query(
         // tries to insert and also grabs university id using event_owner_id
         `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 

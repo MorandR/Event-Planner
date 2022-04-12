@@ -10,15 +10,18 @@ import {
   ListItemButton,
   ListItemText,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-
+// import schoool_names from "../../backend/routes/index.js"
 import CustomButton from "../UI/Button";
+// import router from "../../../backend/routes";
+// const db = require('../config');
+
+
 
 export default function RegisterPage(props) {
   const navigate = useNavigate();
@@ -35,23 +38,49 @@ export default function RegisterPage(props) {
   const [schoolName, setSchoolName] = useState("");
   const [schooLoc, setSchoolLoc] = useState();
   const [NumOfStudents, setNumOfStudents] = useState();
+  
+  var names = [];
 
-  const schoolList = [
-    // Grab list of schools from Database //
+  const schoolList = async () => ( await axios.get("http://localhost:5000/api/grabUnivNames/")
+        .then((res) => {
 
-    { label: "UCF" },
-    { label: "FSU" },
-    { label: "USF" },
-  ];
+          // schoolList =  JSON.stringify(res.data.msg)
+          names = res.data.msg.map(user => user.school_name);
+          return res.data.msg.map(user => user.school_name);
+          console.log(`Schools : ${names}`);
+          
+        })
+        .catch((error) => {
+          console.log("ERROR");
+          console.log(error);
+        })
+  )
+  ;
 
   const handleRegister = (event) => {
     event.preventDefault(); // prevents screen from reloading, which is set to default
 
-    const data = {
+
+    let data;
+    
+    if(isSuperAdmin){
+      data = {
       email: email,
       password: password,
       userLevel: userLevel[userSelected],
-    };
+      school_name: schoolName,
+      num_students: NumOfStudents,
+      location: schooLoc
+      }
+    }
+    else{
+      data = {
+        email: email,
+        password: password,
+        userLevel: userLevel[userSelected],
+        school_name: schoolName,
+        }
+    }
 
     console.log("Enter Response");
     console.log(data);
@@ -67,6 +96,8 @@ export default function RegisterPage(props) {
         console.log(error);
       });
   };
+
+     
 
   return (
     <Grid
@@ -179,7 +210,7 @@ export default function RegisterPage(props) {
             </List>
           </Accordion>
 
-          {isSuperAdmin == undefined ?
+          {isSuperAdmin === undefined ?
           
           <div></div>
           
