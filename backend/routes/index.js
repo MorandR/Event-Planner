@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('../config')
 
+// wait function to prevent needed info from getting grabbed by next query before its ready
 function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -89,18 +90,18 @@ router.post('/login', async (req, res, next) => {
         (err, result) => {
             // if email found, check password.
             if (result.length) {
-                // if password matches, return a success response.
+                // if password matches, return a success response with the user info.
                 if (result[0].password == req.body.password)
                 {
                     return res.status(200).send({
-                        msg: 'User logged in.'
+                        msg: result
                     })
                 }
                 // info mismatch / user does not exist 
                 else
                 {
                     return res.status(403).send({
-                        msg: 'Incorrect information.'
+                        error: err
                     })
                 }
             }
@@ -114,7 +115,7 @@ router.post('/login', async (req, res, next) => {
             else
             {
                 return res.status(403).send({
-                    msg: 'Incorrect information.'
+                    error: 'Incorrect information.'
                 })
             }
         }
@@ -130,13 +131,40 @@ router.post('/grabUnivNames', async (req, res, next) => {
             // if an error occurs.
             if (err) {
                 return res.status(400).send({
-                    msg: err
+                    error: err
                 });
             } // if no error, return all of the school_names in the database
             else
             {
                 return res.status(200).send({
                     msg: result
+                });
+            }
+        }
+    )
+})
+
+// creates an event given the:
+// date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
+router.post('/createEvent', async (req, res, next) => {
+    db.query(
+        // tries to insert and also grabs university id using event_owner_id
+        `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 
+            VALUES ('${req.body.date}', '${req.body.description}', '${req.body.event_name}', '${req.body.location}', 
+                    '${req.body.phone}', '${req.body.rating}', '${req.body.time}', '${req.body.typeof_event}', '${req.body.event_owner_id}',
+                        (SELECT school_id from users where user_id = '${req.body.event_owner_id}'))`,
+        (err, result) => {
+            // if an error occurs.
+            if (err) {
+                return res.status(400).send({
+                    error: err
+                });
+            } // if no error, return event
+            else
+            {
+                return res.status(200).send({
+                    msg: result,
+                    error: null
                 });
             }
         }
