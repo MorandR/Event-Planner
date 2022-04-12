@@ -147,7 +147,28 @@ router.post('/grabUnivNames', async (req, res, next) => {
 // creates an event given the:
 // date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
 router.post('/createEvent', async (req, res, next) => {
-    
+    db.query(
+        // tries to insert and also grabs university id using event_owner_id
+        `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 
+            VALUES ('${req.body.date}', '${req.body.description}', '${req.body.event_name}', '${req.body.location}', 
+                    '${req.body.phone}', '${req.body.rating}', '${req.body.time}', '${req.body.typeof_event}', '${req.body.event_owner_id}',
+                        (SELECT school_id from users where user_id = '${req.body.event_owner_id}'))`,
+        (err, result) => {
+            // if an error occurs.
+            if (err) {
+                return res.status(400).send({
+                    error: err
+                });
+            } // if no error, return event
+            else
+            {
+                return res.status(200).send({
+                    msg: result,
+                    error: null
+                });
+            }
+        }
+    )
 })
 
 module.exports = router;
