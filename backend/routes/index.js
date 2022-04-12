@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const db = require('../config')
 
+function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 router.post('/register', async (req, res, next) => {
     db.query(
         // first checks if the email already exists.
@@ -52,6 +56,8 @@ router.post('/register', async (req, res, next) => {
                             }                            
                         }
                     )
+                    // wait before executing next query.
+                    wait(2000)
                     // if we make it past the above university profile creation, we can then create the user.
                     db.query(`INSERT INTO users (email, password, userLevel, school_id) VALUES('${req.body.email}', '${req.body.password}', '${req.body.userLevel}', (SELECT university_id from university where school_name = '${req.body.school_name}'))`,
                     (err, result) => {
@@ -114,5 +120,27 @@ router.post('/login', async (req, res, next) => {
         }
     )
 });
+
+// this grabs the school_name's from every university to display at the dropdown for registation.
+router.post('/grabUnivNames', async (req, res, next) => {
+    db.query(
+        // first checks if the email already exists.
+        `SELECT school_name FROM university`,
+        (err, result) => {
+            // if an error occurs.
+            if (err) {
+                return res.status(400).send({
+                    msg: err
+                });
+            } // if no error, return all of the school_names in the database
+            else
+            {
+                return res.status(200).send({
+                    msg: result
+                });
+            }
+        }
+    )
+})
 
 module.exports = router;
