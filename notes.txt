@@ -1,0 +1,17 @@
+super admin registration selection:
+	email
+	password
+	userlevel
+	Create school -> name
+	Create school -> location
+	Create School -> # students
+	assign super admin's school id to created school id(foreign_key) (auto generated, might need await to grab it after creation)
+    user_id is auto generated (primary_key)
+
+student/admin registration selection:
+	email	
+	password
+	userlevel
+	Select school -> name
+	Assign user's school id(foreign_key) to selected school name
+    user_id is auto generated (primary_key)
