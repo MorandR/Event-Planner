@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('../config')
 
+// wait function to prevent needed info from getting grabbed by next query before its ready
 function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -89,18 +90,18 @@ router.post('/login', async (req, res, next) => {
         (err, result) => {
             // if email found, check password.
             if (result.length) {
-                // if password matches, return a success response.
+                // if password matches, return a success response with the user info.
                 if (result[0].password == req.body.password)
                 {
                     return res.status(200).send({
-                        msg: 'User logged in.'
+                        msg: result
                     })
                 }
                 // info mismatch / user does not exist 
                 else
                 {
                     return res.status(403).send({
-                        msg: 'Incorrect information.'
+                        error: err
                     })
                 }
             }
@@ -114,7 +115,7 @@ router.post('/login', async (req, res, next) => {
             else
             {
                 return res.status(403).send({
-                    msg: 'Incorrect information.'
+                    error: 'Incorrect information.'
                 })
             }
         }
@@ -130,7 +131,7 @@ router.post('/grabUnivNames', async (req, res, next) => {
             // if an error occurs.
             if (err) {
                 return res.status(400).send({
-                    msg: err
+                    error: err
                 });
             } // if no error, return all of the school_names in the database
             else
@@ -141,6 +142,12 @@ router.post('/grabUnivNames', async (req, res, next) => {
             }
         }
     )
+})
+
+// creates an event given the:
+// date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
+router.post('/createEvent', async (req, res, next) => {
+    
 })
 
 module.exports = router;
