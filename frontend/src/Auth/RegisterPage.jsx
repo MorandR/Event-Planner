@@ -93,6 +93,7 @@ export default function RegisterPage(props) {
       .catch((error) => {
         console.log("ERROR");
         console.log(error);
+        console.log(data)
       });
   };
     
@@ -253,6 +254,7 @@ export default function RegisterPage(props) {
                 onOpen={() => getSchoolList()}
                 loading={loading}
                 sx={{ width: 300 }}
+                onChange={(event, value) => setSchoolName(value)}
                 renderInput={(params) => <TextField {...params} label="School Name" />}
           />
             </div>
