@@ -85,7 +85,7 @@ export default function RegisterPage(props) {
     console.log(data);
 
     axios
-      .post(`${url}/register/`, data)
+      .post(`${url}/register`, data)
       .then((res) => {
         console.log(res);
         navigate("/login");
