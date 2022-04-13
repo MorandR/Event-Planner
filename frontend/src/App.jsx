@@ -4,15 +4,13 @@ import RegisterPage from "./Auth/RegisterPage";
 import './App.scss';
 import Dashboard from "./Auth/Dashboard";
 
-function App() {
-
-  console.log("Check");
+export default function App() {
 
   return (
 
     <Router>
       <Routes>
-         <Route path="/dashboard" element={<Dashboard/>}/>
+         {/* <Route path="/dashboard" element={<Dashboard />}/> */}
          <Route path="/login" element={<LoginPage/>}/>
          <Route path="/register" element={<RegisterPage/>}/>
          <Route path="/" element={<LoginPage />}/>
@@ -22,5 +20,3 @@ function App() {
     
   )
 }
-
-export default App;

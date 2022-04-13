@@ -20,8 +20,7 @@ import { useNavigate } from "react-router";
 import CustomButton from "../UI/Button";
 // import router from "../../../backend/routes";
 // const db = require('../config');
-
-
+let x = 0;
 
 export default function RegisterPage(props) {
   const navigate = useNavigate();
@@ -39,23 +38,23 @@ export default function RegisterPage(props) {
   const [schooLoc, setSchoolLoc] = useState();
   const [NumOfStudents, setNumOfStudents] = useState();
   
-  var names = [];
+  const [names, setNames] = useState([])
+  const [loading, setLoading] = useState(false)
+  const getSchoolList = () => {
+  setLoading(true)
+  axios.get("http://localhost:5000/api/grabUnivNames/")
+      .then((res) => {
 
-  const schoolList = async () => ( await axios.get("http://localhost:5000/api/grabUnivNames/")
-        .then((res) => {
-
-          // schoolList =  JSON.stringify(res.data.msg)
-          names = res.data.msg.map(user => user.school_name);
-          return res.data.msg.map(user => user.school_name);
-          console.log(`Schools : ${names}`);
-          
-        })
-        .catch((error) => {
-          console.log("ERROR");
-          console.log(error);
-        })
-  )
-  ;
+        // schoolList =  JSON.stringify(res.data.msg)
+        const namesArr = res.data.msg.map(user => user.school_name)
+        setNames(namesArr)
+        // return res.data.msg.map(user => user.school_name);
+      })
+      .catch((error) => {
+        console.log("ERROR");
+        console.log(error);
+      }).finally(() => setLoading(false))
+  }
 
   const handleRegister = (event) => {
     event.preventDefault(); // prevents screen from reloading, which is set to default
@@ -96,8 +95,7 @@ export default function RegisterPage(props) {
         console.log(error);
       });
   };
-
-     
+    
 
   return (
     <Grid
@@ -251,12 +249,12 @@ export default function RegisterPage(props) {
           ) : (
             <div style={{margin: 10}}>
               <Autocomplete
-                options={schoolList}
-                renderInput={(params) => (
-                  <TextField {...params} label="School Name" />
-                )}
-                style={{ width: 200 }}
-              />
+                options={names}
+                onOpen={() => getSchoolList()}
+                loading={loading}
+                sx={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} label="School Name" />}
+          />
             </div>
           ))}
 
