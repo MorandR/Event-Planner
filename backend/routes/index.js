@@ -22,7 +22,7 @@ router.post('/register', async (req, res, next) => {
 
         db.query(
             // first checks if the email already exists.
-            `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(req.body.email)})`,
+            `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(req.body.email)});`,
             (err, result) => {
 
                 // if email found.
@@ -41,7 +41,9 @@ router.post('/register', async (req, res, next) => {
                 // now to insert user with email and password. check userLevel to decide if a univ profile needs to be created
                 else { // if userLevel is NOT super admin, assign user the selected schools id for school_id
                     if (req.body.userLevel != "super admin"){
-                        db.query(`INSERT INTO users (email, password, userLevel, school_id) VALUES('${req.body.email}', '${hash}', '${req.body.userLevel}', (SELECT university_id from university where school_name = '${req.body.school_name}'))`,
+                        db.query(`INSERT INTO users (email, password, userLevel, school_id) VALUES(
+                            '${req.body.email}', '${hash}', '${req.body.userLevel}', (
+                                SELECT university_id from university where school_name = '${req.body.school_name}'));`,
                             (err, result) => {
                                 if (err) {
                                     return res.status(400).send({
@@ -107,7 +109,7 @@ router.post('/login', async (req, res, next) => {
 
     db.query(
         // checks is user email exists.
-        `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(email)})`,
+        `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(email)});`,
         (err, result) => {
 
             // if email found, check password.
@@ -136,7 +138,7 @@ router.post('/login', async (req, res, next) => {
 router.get('/grabUnivNames', async (req, res, next) => {
     db.query(
         // selects all school names from university table.
-        `SELECT school_name FROM university`,
+        `SELECT school_name FROM university;`,
         (err, result) => {
             // if an error occurs.
             if (err) {
@@ -162,7 +164,7 @@ router.put('/createEvent', async (req, res, next) => {
         `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 
             VALUES ('${req.body.date}', '${req.body.description}', '${req.body.event_name}', '${req.body.location}', 
                     '${req.body.phone}', '${req.body.rating}', '${req.body.time}', '${req.body.typeof_event}', '${req.body.event_owner_id}',
-                        (SELECT school_id from users where user_id = '${req.body.event_owner_id}'))`,
+                        (SELECT school_id from users where user_id = '${req.body.event_owner_id}'));`,
         (err, result) => {
             // if an error occurs.
             if (err) {
@@ -186,7 +188,7 @@ router.post('/addComment', async (req, res, next) => {
     db.query(
         `INSERT into comments (comment, the_user, comment_owner_id, the_event_id)
             VALUES ('${req.body.comment}', (SELECT email from users where user_id = '${req.body.user_id}'), 
-                    '${req.body.user_id}', '${req.body.the_event_id}')`,
+                    '${req.body.user_id}', '${req.body.the_event_id}');`,
             (err, result) => {
                 // if an error occurs.
                 if (err) {
@@ -202,6 +204,27 @@ router.post('/addComment', async (req, res, next) => {
                     });
                 }
             }
+    )
+})
+
+router.get('/getEvents', async (req, res, next) => {
+    db.query(
+        `select * from event_list`,
+        (err, result) => {
+            if (err)
+            {
+                console.log(err)
+                return res.status(400).send({
+                    error: err
+                })
+            }
+            else
+            {
+                res.status(200).send({
+                    message: result
+                })
+            }
+        }
     )
 })
 
