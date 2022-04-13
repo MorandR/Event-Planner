@@ -16,11 +16,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-// import schoool_names from "../../backend/routes/index.js"
 import CustomButton from "../UI/Button";
-// import router from "../../../backend/routes";
-// const db = require('../config');
-let x = 0;
+
+const url = `http://localhost:5000/api`
+
 
 export default function RegisterPage(props) {
   const navigate = useNavigate();
@@ -40,9 +39,10 @@ export default function RegisterPage(props) {
   
   const [names, setNames] = useState([])
   const [loading, setLoading] = useState(false)
+  
   const getSchoolList = () => {
   setLoading(true)
-  axios.get("http://localhost:5000/api/grabUnivNames/")
+  axios.get(`${url}/grabUnivNames/`)
       .then((res) => {
 
         // schoolList =  JSON.stringify(res.data.msg)
@@ -85,7 +85,7 @@ export default function RegisterPage(props) {
     console.log(data);
 
     axios
-      .post("http://localhost:5000/api/register/", data)
+      .post(`${url}/register/`, data)
       .then((res) => {
         console.log(res);
         navigate("/login");
