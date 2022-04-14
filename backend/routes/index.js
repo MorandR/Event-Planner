@@ -115,7 +115,7 @@ router.post('/login', async (req, res, next) => {
 
                 // getting user id if we get a result to later use in the token.
                 const userId = result[0].user_id
-                console.log(userId)
+                //console.log(userId)
 
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (err) return res.status(400).send({error: error})

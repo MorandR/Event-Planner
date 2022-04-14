@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 // import LockIcon from "@mui/icons-material/Lock";
-import RegisterPage from "./RegisterPage";
+
 import { useState } from "react";
 import CustomButton from "../UI/Button";
 import axios from "axios";
