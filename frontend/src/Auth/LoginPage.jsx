@@ -1,5 +1,6 @@
 import {
   Avatar,
+  bottomNavigationClasses,
   Box,
   Checkbox,
   FormControlLabel,
@@ -12,12 +13,15 @@ import {
 import { useState } from "react";
 import CustomButton from "../UI/Button";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 
 export default function LoginPage(props) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [remember, setRemember] = useState("");
+
+  const navigate = useNavigate();
 
 
   const url = "http://localhost:5000/api";
@@ -29,9 +33,6 @@ export default function LoginPage(props) {
       password: password,
     };
 
-    console.log("Enter Response");
-    console.log(data);
-
     axios
       .post(`${url}/login/`, data)
       .then((res) => {
@@ -41,6 +42,7 @@ export default function LoginPage(props) {
         
         // for now just storing token in session storage since this app wont be online.
         sessionStorage.setItem("accessToken", res.data.token);
+        navigate("/dashboard")
       })
       .catch((error) => {
         console.log("ERROR");
