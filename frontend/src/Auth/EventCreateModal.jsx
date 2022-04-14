@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   Modal,
@@ -9,7 +8,7 @@ import {
 
 import { useState } from "react";
 import axios from "axios";
-import Dashboard from "./Dashboard";
+// import Dashboard from "./Dashboard";
 
 const url = `http://localhost:5000/api`;
 
@@ -35,11 +34,11 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
   const [rate, setRating] = useState("");
   const [time, setTime] = useState("");
   const [cat, setCategory] = useState("");
-  const [school, setSchool] = useState("");
   const [uniNames, setUniNames] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSchoolList = () => {
+
     setLoading(true);
     axios
       .get(`${url}/grabUnivNames/`)
@@ -72,7 +71,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
         },
         // the below inserts the accessToken into the header to be accessed later.
         {
-          header: {
+          headers: {
             accessToken: sessionStorage.getItem("accessToken"),
           },
         }

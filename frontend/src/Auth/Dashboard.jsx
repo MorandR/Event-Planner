@@ -21,34 +21,35 @@ import axios from "axios";
 // import CustomButton from "../UI/Button";
 
 export default function Dashboard(props) {
-
   const [events, setEvents] = useState([]);
 
   const url = `http://localhost:5000/api`;
 
   // Connected to the server, retreieve table info and show
-    // axios.get(`${url}/getEvents/`)
-    // .then(res => {
 
+  axios
+    .get(`${url}/getEvents/`)
+    .then(
+      (res) => {
+        // const eventArr = res.data.msg.map(event => event)
+        // setEvents(eventArr)
+        console.log(res);
+      },
+      {
+        headers: {
+          accessToken: sessionStorage.getItem("accessToken"),
+        },
+      }
+    )
+    .catch((err) => {
+      console.log(`ERROR: ${err}`);
+    });
 
-    //   // const eventArr = res.data.msg.map(event => event)
-    //   // setEvents(eventArr)
-
-    //   // console.log(res.data)
-    // })
-    // .catch((err) => {
-    //   console.log(`ERROR: ${err}`);
-    // })
-
-  let data = {
-
-  }
+  let data = {};
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
-
-
 
   const columns = [
     { field: "id", label: "ID", minwidth: 100 },
@@ -158,14 +159,9 @@ export default function Dashboard(props) {
   return (
     <Box sx={{ flex: 1 }}>
       <AppBar position="static">
-        <Toolbar >
+        <Toolbar>
+          <EventCreateModal modalOpen={modalOpen} handleClose={handleClose} />
 
-
-          <EventCreateModal
-          modalOpen={modalOpen}
-          handleClose={handleClose}
-          />
-          
           <Typography
             variant="h6"
             noWrap
@@ -175,7 +171,7 @@ export default function Dashboard(props) {
             Welcome
           </Typography>
 
-          <Button variant="contained" onClick={handleOpen} >
+          <Button variant="contained" onClick={handleOpen}>
             Create Event
           </Button>
         </Toolbar>
@@ -217,5 +213,4 @@ export default function Dashboard(props) {
       </TableContainer>
     </Box>
   );
-
 }
