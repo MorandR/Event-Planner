@@ -228,7 +228,7 @@ router.get('/getEvents', validateToken, async (req, res, next) => {
             else
             {
                 res.status(200).send({
-                    message: result
+                    msg: result
                 })
             }
         }
