@@ -2,7 +2,7 @@ import {
   AppBar,
   Box,
   Button,
-  IconButton,
+  Modal,
   Paper,
   Table,
   TableBody,
@@ -13,16 +13,51 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { MenuIcon } from "@mui/icons-material";
-// import { useState } from "react";
+
+import { useState } from "react";
+import EventCreateModal from "./EventCreateModal";
 // import axios from "axios";
 // import { useNavigate } from "react-router";
 // import CustomButton from "../UI/Button";
 
 export default function Dashboard(props) {
+  // const [events, setEvents] = useState([]);
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const open = Boolean(anchorEl);
+
+  // const url = `http://localhost:5000/api`;
+
+  //Connected to the server, retreieve table info and show
+  //   axios.get(`${url}/getEvent/`)
+  //   .then(res => {
+  //     console.log(res.data.msg)
+  //   })
+  //   .catch((err) => {
+  //     console.log(`ERROR: ${err}`);
+  //   })
+
+  // let data = {
+
+  // }
+
+  // useEffect(() => {
+  //   async function loadDashboard() {
+  //     //Show all events in the database
+  //     console.log(result);
+  //   }
+  //   loadDashboard();
+  // }, []);
+
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+
+
+
   const columns = [
     { field: "id", label: "ID", minwidth: 100 },
-    { field: "name", label: "Event Name", minwidth: 100 },
+    { field: "eventName", label: "Event eventName", minwidth: 100 },
     { field: "school", label: "School", minwidth: 100 },
     { field: "loc", label: "Location", minwidth: 100 },
     { field: "desc", label: "Description", minwidth: 100 },
@@ -41,7 +76,7 @@ export default function Dashboard(props) {
   const rows = [
     {
       id: "1",
-      name: "PingPong",
+      eventName: "PingPong",
       school: "UCF",
       loc: "4000 Universtity Blvd",
       desc: "None",
@@ -53,7 +88,7 @@ export default function Dashboard(props) {
     },
     {
       id: "2",
-      name: "Culture Day",
+      eventName: "Culture Day",
       school: "USF",
       loc: "3120 Dave Cir",
       desc: "None",
@@ -65,7 +100,7 @@ export default function Dashboard(props) {
     },
     {
       id: "3",
-      name: "Blank at Bay",
+      eventName: "Blank at Bay",
       school: "UF",
       loc: "2348 Crasion Blvd",
       desc: "None",
@@ -77,7 +112,7 @@ export default function Dashboard(props) {
     },
     {
       id: "4",
-      name: "Hockey",
+      eventName: "Hockey",
       school: "FSU",
       loc: "5000 Stance Ct",
       desc: "None",
@@ -89,7 +124,7 @@ export default function Dashboard(props) {
     },
     {
       id: "5",
-      name: "Basketball",
+      eventName: "Basketball",
       school: "FAMU",
       loc: " 9119 Rattle St",
       desc: "None",
@@ -101,7 +136,7 @@ export default function Dashboard(props) {
     },
     {
       id: "6",
-      name: "Currency Trade",
+      eventName: "Currency Trade",
       school: "FGCU",
       loc: "3880 Eagles Blvd",
       desc: "None",
@@ -113,7 +148,7 @@ export default function Dashboard(props) {
     },
     {
       id: "7",
-      name: "Graduation",
+      eventName: "Graduation",
       school: "UCF",
       loc: "4000 Universtity Blvd",
       desc: "None",
@@ -128,16 +163,14 @@ export default function Dashboard(props) {
   return (
     <Box sx={{ flex: 1 }}>
       <AppBar position="static">
-        <Toolbar>
-          {/* <IconButton 
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
+        <Toolbar >
+
+
+          <EventCreateModal
+          modalOpen={modalOpen}
+          handleClose={handleClose}
+          />
+          
           <Typography
             variant="h6"
             noWrap
@@ -147,10 +180,11 @@ export default function Dashboard(props) {
             Welcome
           </Typography>
 
-          <Button variant="contained">Logout</Button>
+          <Button variant="contained" onClick={handleOpen} >
+            Create Event
+          </Button>
         </Toolbar>
       </AppBar>
-
       <TableContainer
         component={Paper}
         sx={{
@@ -188,4 +222,5 @@ export default function Dashboard(props) {
       </TableContainer>
     </Box>
   );
+
 }
