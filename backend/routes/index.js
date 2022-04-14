@@ -113,12 +113,13 @@ router.post('/login', async (req, res, next) => {
         // checks is user email exists.
         `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(email)});`,
         (err, result) => {
-            const schoolId = result[0].school_id
+            
             // if email found, check password.
             if (result.length) {
 
                 // getting user id if we get a result to later use in the token.
                 const userId = result[0].user_id
+                const schoolId = result[0].school_id
 
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (err) return res.status(400).send({error: error})
