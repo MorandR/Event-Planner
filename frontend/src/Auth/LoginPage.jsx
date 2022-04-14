@@ -112,13 +112,6 @@ export default function LoginPage(props) {
               checked={props.remember}
               onChange={(event) => setRemember(event.target.checked)}
             />
-            <Link
-              href="#"
-              variant="body2"
-              sx={{ alignSelf: "center" }}
-            >
-              Forgot password?
-            </Link>
           </Grid>
           <CustomButton
             loading={props.loading}
@@ -134,7 +127,7 @@ export default function LoginPage(props) {
             href="/register"
             variant="body2"
             onClick={() => {
-              props.setCurrentBox("register");
+             navigate("/register");
             }}
           >
             {"Don't have an account yet? Create one!"}

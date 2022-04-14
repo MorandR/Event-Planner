@@ -27,18 +27,18 @@ export default function Dashboard(props) {
   const url = `http://localhost:5000/api`;
 
   // Connected to the server, retreieve table info and show
-    axios.get(`${url}/getEvents/`)
-    .then(res => {
+    // axios.get(`${url}/getEvents/`)
+    // .then(res => {
 
 
-      // const eventArr = res.data.msg.map(event => event)
-      // setEvents(eventArr)
+    //   // const eventArr = res.data.msg.map(event => event)
+    //   // setEvents(eventArr)
 
-      console.log(res.data)
-    })
-    .catch((err) => {
-      console.log(`ERROR: ${err}`);
-    })
+    //   // console.log(res.data)
+    // })
+    // .catch((err) => {
+    //   console.log(`ERROR: ${err}`);
+    // })
 
   let data = {
 

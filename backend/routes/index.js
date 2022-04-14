@@ -167,6 +167,8 @@ router.get('/grabUnivNames', async (req, res, next) => {
 // date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
 router.put('/createEvent', validateToken, async (req, res, next) => {
 
+    // console.log(req.header);
+    console.log(req.body);
     db.query(
         // tries to insert and also grabs university id using event_owner_id
         `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, user_id, school_id) 

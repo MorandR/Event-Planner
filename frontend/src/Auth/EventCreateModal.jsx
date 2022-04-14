@@ -1,4 +1,11 @@
-import { AutoComplete, Box, Button, Modal, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import { useState } from "react";
 import axios from "axios";
@@ -51,7 +58,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
 
   const createEvent = () => {
     axios
-      .post(
+      .put(
         `${url}/createEvent/`,
         {
           date: date,
@@ -65,12 +72,14 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
         },
         // the below inserts the accessToken into the header to be accessed later.
         {
-          headers: {
+          header: {
             accessToken: sessionStorage.getItem("accessToken"),
           },
         }
       )
       .then((response) => {
+
+        console.log(response);
         handleClose();
       })
       .catch((error) => {
@@ -79,12 +88,11 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
   };
 
   return (
-
     <Modal open={modalOpen} onBackdropClick={handleClose} onClose={handleClose}>
       <Box style={style}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6"> Create an Event </Typography>`
-          <Button variant="contained">Submit</Button>
+          <Button variant="contained" onClick={createEvent}>Submit</Button>
         </div>
 
         <TextField
@@ -100,8 +108,6 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           autoFocus
         />
 
-      
-
         <TextField
           margin="normal"
           sx={{ borderRadius: 100 }}
@@ -114,6 +120,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           onChange={(event) => setLocation(event.target.value)}
           autoFocus
         />
+
         <TextField
           margin="normal"
           sx={{ borderRadius: 100 }}
@@ -170,7 +177,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           label="Rating"
           name="rating"
           autoComplete="Rating"
-          type="rate"
+          type="text"
           onChange={(event) => setRating(event.target.value)}
           autoFocus
         />
