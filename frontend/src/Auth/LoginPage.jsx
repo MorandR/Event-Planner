@@ -19,6 +19,8 @@ export default function LoginPage(props) {
   const [email, setEmail] = useState("");
   const [remember, setRemember] = useState("");
 
+
+  const url = "http://localhost:5000/api";
   const handleLogin = (event) => {
     event.preventDefault(); // prevents screen from reloading, which is set to default
 
@@ -31,7 +33,7 @@ export default function LoginPage(props) {
     console.log(data);
 
     axios
-      .post("http://localhost:5000/api/login/", data)
+      .post(`${url}/login/`, data)
       .then((res) => {
         console.log(res);
       })
