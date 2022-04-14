@@ -28,7 +28,14 @@ export default function Dashboard(props) {
   // Connected to the server, retreieve table info and show
 
   axios
-    .get(`${url}/getEvents/`)
+    .get(`${url}/getEvents/`,
+    // the below inserts the accessToken into the header to be accessed later.
+    {
+      headers: {
+        accessToken: sessionStorage.getItem("accessToken"),
+      },
+    }
+    )
     .then(
       (res) => {
         // const eventArr = res.data.msg.map(event => event)
