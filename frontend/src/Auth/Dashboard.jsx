@@ -16,38 +16,33 @@ import {
 
 import { useState } from "react";
 import EventCreateModal from "./EventCreateModal";
-// import axios from "axios";
+import axios from "axios";
 // import { useNavigate } from "react-router";
 // import CustomButton from "../UI/Button";
 
 export default function Dashboard(props) {
-  // const [events, setEvents] = useState([]);
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const open = Boolean(anchorEl);
 
-  // const url = `http://localhost:5000/api`;
+  const [events, setEvents] = useState([]);
 
-  //Connected to the server, retreieve table info and show
-  //   axios.get(`${url}/getEvent/`)
-  //   .then(res => {
-  //     console.log(res.data.msg)
-  //   })
-  //   .catch((err) => {
-  //     console.log(`ERROR: ${err}`);
-  //   })
+  const url = `http://localhost:5000/api`;
 
-  // let data = {
+  // Connected to the server, retreieve table info and show
+    axios.get(`${url}/getEvents/`)
+    .then(res => {
 
-  // }
 
-  // useEffect(() => {
-  //   async function loadDashboard() {
-  //     //Show all events in the database
-  //     console.log(result);
-  //   }
-  //   loadDashboard();
-  // }, []);
+      // const eventArr = res.data.msg.map(event => event)
+      // setEvents(eventArr)
 
+      console.log(res.data)
+    })
+    .catch((err) => {
+      console.log(`ERROR: ${err}`);
+    })
+
+  let data = {
+
+  }
 
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);

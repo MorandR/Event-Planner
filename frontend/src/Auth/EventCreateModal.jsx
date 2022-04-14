@@ -1,4 +1,4 @@
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import { AutoComplete, Box, Button, Modal, TextField, Typography } from "@mui/material";
 
 import { useState } from "react";
 import axios from "axios";
@@ -28,26 +28,47 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
   const [rate, setRating] = useState("");
   const [time, setTime] = useState("");
   const [cat, setCategory] = useState("");
-  const [school, setSchool] = useState("")
+  const [school, setSchool] = useState("");
+  const [uniNames, setUniNames] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getSchoolList = () => {
+    setLoading(true);
+    axios
+      .get(`${url}/grabUnivNames/`)
+      .then((res) => {
+        // schoolList =  JSON.stringify(res.data.msg)
+        const namesArr = res.data.msg.map((user) => user.school_name);
+        setUniNames(namesArr);
+        // return res.data.msg.map(user => user.school_name);
+      })
+      .catch((error) => {
+        console.log("ERROR");
+        console.log(error);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const createEvent = () => {
     axios
-      .post(`${url}/createEvent/`, {
-        date: date,
-        description: desc,
-        event_name: eventName,
-        location: loc,
-        phone: number,
-        rating: rate,
-        time: time,
-        typeof_event: cat,
-      },
-          // the below inserts the accessToken into the header to be accessed later.
-          {
-            headers: {
-              accessToken: sessionStorage.getItem("accessToken")
-            },
-          }
+      .post(
+        `${url}/createEvent/`,
+        {
+          date: date,
+          description: desc,
+          event_name: eventName,
+          location: loc,
+          phone: number,
+          rating: rate,
+          time: time,
+          typeof_event: cat,
+        },
+        // the below inserts the accessToken into the header to be accessed later.
+        {
+          headers: {
+            accessToken: sessionStorage.getItem("accessToken"),
+          },
+        }
       )
       .then((response) => {
         handleClose();
@@ -58,10 +79,13 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
   };
 
   return (
+
     <Modal open={modalOpen} onBackdropClick={handleClose} onClose={handleClose}>
       <Box style={style}>
-
-        <Typography variant="h6"> Create an Event </Typography>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h6"> Create an Event </Typography>`
+          <Button variant="contained">Submit</Button>
+        </div>
 
         <TextField
           margin="normal"
@@ -75,18 +99,9 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           onChange={(event) => setEventName(event.target.value)}
           autoFocus
         />
-        <TextField
-          margin="normal"
-          sx={{ borderRadius: 100 }}
-          required
-          fullWidth
-          label="School"
-          name="school"
-          autoComplete="School Name"
-          type="schoolName"
-          onChange={(event) => setSchool(event.target.value)}
-          autoFocus
-        />
+
+      
+
         <TextField
           margin="normal"
           sx={{ borderRadius: 100 }}
