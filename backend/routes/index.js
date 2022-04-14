@@ -115,18 +115,22 @@ router.post('/login', async (req, res, next) => {
             // if email found, check password.
             if (result.length) {
                 bcrypt.compare(password, result[0].password, (error, response) => {
-                    if (response) {
-                        res.send(result)
+                    
+                    if (error)
+                    {
+                        return res.status(400).send({error: error})
                     }
-                    else {
-                        res.send({message: 'Wrong email/password combination.'}) 
+                    else
+                    {
+                        return res.status(200).send({result: result[0]})
                     }
+                    
                 })
             }
 
             // incorrect info
             else {
-                res.send({message: "User doesn't exist"}) 
+                return res.send({message: "User doesn't exist"}) 
             }
 
                 
