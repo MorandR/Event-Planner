@@ -4,6 +4,10 @@ const db = require('../config')
 const bcrypt = require('bcrypt')
 const { sign } = require('jsonwebtoken')
 
+// wherever there is validateToken written into the parameters of a request, that means we use the middleware 
+// to verify that its a valid token tored in the session storage before performing the action (valid logged in user)
+const {validateToken} = require('../middleware/AuthMiddleware')
+
 
 const saltRounds = 10
 
@@ -122,7 +126,7 @@ router.post('/login', async (req, res, next) => {
                     if (!response) return res.status(400).send({error: 'Incorrect password.'})
 
                     // correct password given. accessToken signing with the userId, email. stored as user for identification.
-                    const accessToken = sign({user: userId, email: email}, process.env.SECRET)
+                    const accessToken = sign({user_id: userId, email: email}, process.env.SECRET)
                     return res.status(200).send({token: accessToken})
                 })
             }
@@ -161,7 +165,7 @@ router.get('/grabUnivNames', async (req, res, next) => {
 
 // creates an event given the:
 // date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
-router.put('/createEvent', async (req, res, next) => {
+router.put('/createEvent', validateToken, async (req, res, next) => {
     db.query(
         // tries to insert and also grabs university id using event_owner_id
         `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 
@@ -187,7 +191,7 @@ router.put('/createEvent', async (req, res, next) => {
 })
 
 // needs comment, the_user, the_event_id, user_id
-router.post('/addComment', async (req, res, next) => {
+router.post('/addComment', validateToken, async (req, res, next) => {
     db.query(
         `INSERT into comments (comment, the_user, comment_owner_id, the_event_id)
             VALUES ('${req.body.comment}', (SELECT email from users where user_id = '${req.body.user_id}'), 
@@ -210,7 +214,7 @@ router.post('/addComment', async (req, res, next) => {
     )
 })
 
-router.get('/getEvents', async (req, res, next) => {
+router.get('/getEvents', validateToken, async (req, res, next) => {
     db.query(
         `select * from event_list`,
         (err, result) => {

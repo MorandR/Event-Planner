@@ -41,7 +41,14 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
         rating: rate,
         time: time,
         typeof_event: cat,
-      })
+      },
+          // the below inserts the accessToken into the header to be accessed later.
+          {
+            headers: {
+              accessToken: sessionStorage.getItem("accessToken")
+            },
+          }
+      )
       .then((response) => {
         handleClose();
       })

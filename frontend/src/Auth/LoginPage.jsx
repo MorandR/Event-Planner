@@ -35,7 +35,12 @@ export default function LoginPage(props) {
     axios
       .post(`${url}/login/`, data)
       .then((res) => {
-        console.log(res);
+        // if error.
+        if (res.data.error)
+          alert(res.data.error)
+        
+        // for now just storing token in session storage since this app wont be online.
+        sessionStorage.setItem("accessToken", res.data.token);
       })
       .catch((error) => {
         console.log("ERROR");
