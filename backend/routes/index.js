@@ -2,7 +2,8 @@ const express = require('express')
 const router = express.Router()
 const db = require('../config')
 const bcrypt = require('bcrypt')
-// const { sign } = require('jsonwebtoken')
+const { sign } = require('jsonwebtoken')
+
 
 const saltRounds = 10
 
@@ -111,12 +112,18 @@ router.post('/login', async (req, res, next) => {
 
             // if email found, check password.
             if (result.length) {
+
+                // getting user id if we get a result to later use in the token.
+                const userId = result[0].user_id
+                console.log(userId)
+
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (err) return res.status(400).send({error: error})
                     if (!response) return res.status(400).send({error: 'Incorrect password.'})
 
-                    // correct password given. this is where token stuff will go.
-                    return res.status(200).send({result: response})
+                    // correct password given. accessToken signing with the userId, email. stored as user for identification.
+                    const accessToken = sign({user: userId, email: email}, process.env.SECRET)
+                    return res.status(200).send({token: accessToken})
                 })
             }
 

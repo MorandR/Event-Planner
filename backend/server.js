@@ -5,6 +5,8 @@ const port = process.env.PORT || 5000
 const routes = require('./routes')
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require('dotenv')
+dotenv.config()
 
 
 app.use(express.json())
