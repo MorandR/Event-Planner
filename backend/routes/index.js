@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('../config')
 const bcrypt = require('bcrypt')
+// const { sign } = require('jsonwebtoken')
 
 const saltRounds = 10
 
@@ -14,11 +15,7 @@ router.post('/register', async (req, res, next) => {
 
     const password = req.body.password
 
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-
-        if (err) {
-            console.log(err)
-        }
+    bcrypt.hash(password, saltRounds).then((hash) => {
 
         db.query(
             // first checks if the email already exists.
@@ -98,7 +95,7 @@ router.post('/register', async (req, res, next) => {
             }
         )
 
-    })
+    }).catch((err) => console.error(err))
 
     
 })
@@ -115,16 +112,11 @@ router.post('/login', async (req, res, next) => {
             // if email found, check password.
             if (result.length) {
                 bcrypt.compare(password, result[0].password, (error, response) => {
-                    
-                    if (error)
-                    {
-                        return res.status(400).send({error: error})
-                    }
-                    else
-                    {
-                        return res.status(200).send({result: result[0]})
-                    }
-                    
+                    if (err) return res.status(400).send({error: error})
+                    if (!response) return res.status(400).send({error: 'Incorrect password.'})
+
+                    // correct password given. this is where token stuff will go.
+                    return res.status(200).send({result: response})
                 })
             }
 
