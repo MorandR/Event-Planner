@@ -45,7 +45,7 @@ router.post('/register', async (req, res, next) => {
                     if (req.body.userLevel != "super admin"){
                         db.query(`INSERT INTO users (email, password, userLevel, school_id) VALUES(
                             '${req.body.email}', '${hash}', '${req.body.userLevel}', (
-                                SELECT university_id from university where school_name = '${req.body.school_name}'));`,
+                                SELECT school_id from university where school_name = '${req.body.school_name}'));`,
                             (err, result) => {
                                 if (err) {
                                     return res.status(400).send({
@@ -168,10 +168,10 @@ router.get('/grabUnivNames', async (req, res, next) => {
 router.put('/createEvent', validateToken, async (req, res, next) => {
     db.query(
         // tries to insert and also grabs university id using event_owner_id
-        `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id, univ_id) 
+        `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, user_id, school_id) 
             VALUES ('${req.body.date}', '${req.body.description}', '${req.body.event_name}', '${req.body.location}', 
-                    '${req.body.phone}', '${req.body.rating}', '${req.body.time}', '${req.body.typeof_event}', '${req.body.event_owner_id}',
-                        (SELECT school_id from users where user_id = '${req.body.event_owner_id}'));`,
+                    '${req.body.phone}', '${req.body.rating}', '${req.body.time}', '${req.body.typeof_event}', '${req.body.user_id}',
+                        (SELECT school_id from users where user_id = '${req.body.user_id}'));`,
         (err, result) => {
             // if an error occurs.
             if (err) {
@@ -193,7 +193,7 @@ router.put('/createEvent', validateToken, async (req, res, next) => {
 // needs comment, the_user, the_event_id, user_id
 router.post('/addComment', validateToken, async (req, res, next) => {
     db.query(
-        `INSERT into comments (comment, the_user, comment_owner_id, the_event_id)
+        `INSERT into comments (comment, user_email, user_id, event_id)
             VALUES ('${req.body.comment}', (SELECT email from users where user_id = '${req.body.user_id}'), 
                     '${req.body.user_id}', '${req.body.the_event_id}');`,
             (err, result) => {
