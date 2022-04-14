@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 // import Dashboard from "./Dashboard";
 
@@ -32,10 +32,11 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
   const [loc, setLocation] = useState("");
   const [number, setNumber] = useState("");
   const [rate, setRating] = useState("");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(new Date());
   const [cat, setCategory] = useState("");
   const [uniNames, setUniNames] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
+
 
   const getSchoolList = () => {
 
@@ -162,7 +163,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           required
           fullWidth
           label=""
-          name="Time"
+          name="time"
           autoComplete=""
           type="time"
           onChange={(event) => setTime(event.target.value)}

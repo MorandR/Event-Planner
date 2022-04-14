@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import EventCreateModal from "./EventCreateModal";
 import axios from "axios";
 // import { useNavigate } from "react-router";
@@ -22,25 +22,31 @@ import axios from "axios";
 
 export default function Dashboard(props) {
   const [events, setEvents] = useState([]);
-
+  const [loading, setLoading] = useState(false)
   const url = `http://localhost:5000/api`;
 
+
+  // useEffect(()=>{
+  //   setLoading(true);
+  //   console.log(events)
+  // },[])
   // Connected to the server, retreieve table info and show
 
   axios
-    .get(`${url}/getEvents/`,
-    // the below inserts the accessToken into the header to be accessed later.
-    {
-      headers: {
-        accessToken: sessionStorage.getItem("accessToken"),
-      },
-    }
+    .get(
+      `${url}/getEvents/`,
+      // the below inserts the accessToken into the header to be accessed later.
+      {
+        headers: {
+          accessToken: sessionStorage.getItem("accessToken"),
+        },
+      }
     )
     .then(
       (res) => {
-        // const eventArr = res.data.msg.map(event => event)
-        // setEvents(eventArr)
-        console.log(res);
+        //  console.log(res.data.msg);
+        const eventArr = res.data.msg.map((event) => event);
+        setEvents(eventArr);
       },
       {
         headers: {
@@ -50,7 +56,7 @@ export default function Dashboard(props) {
     )
     .catch((err) => {
       console.log(`ERROR: ${err}`);
-    });
+    }).finally(()=> setLoading(false));
 
   let data = {};
 
@@ -59,21 +65,21 @@ export default function Dashboard(props) {
   const handleClose = () => setModalOpen(false);
 
   const columns = [
-    { field: "id", label: "ID", minwidth: 100 },
-    { field: "eventName", label: "Event eventName", minwidth: 100 },
-    { field: "school", label: "School", minwidth: 100 },
-    { field: "loc", label: "Location", minwidth: 100 },
-    { field: "desc", label: "Description", minwidth: 100 },
-    { field: "cat", label: "Category", minwidth: 100 },
+    { field: "event_id", label: "ID", minwidth: 100 },
+    { field: "event_name", label: "Event Name", minwidth: 100 },
+    { field: "location", label: "Location", minwidth: 100 },
+    { field: "description", label: "Description", minwidth: 100 },
+    { field: "typeof_event", label: "Category", minwidth: 100 },
     { field: "date", label: "Date", minwidth: 100 },
-    { field: "time", label: "Time", minwidth: 100 },
-    { field: "rate", label: "Rating", minwidth: 100 },
-    { field: "number", label: "Contact Number", minwidth: 100 },
+    // { field: "time", label: "Time", minwidth: 100 },
+    { field: "rating", label: "Rating", minwidth: 100 },
+    { field: "phone", label: "Contact Number", minwidth: 100 },
   ];
 
-  const formatNumber = (number) => {
-    let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
-    return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
+  const formatNumber = (number) => { //format NUMBERS >> PHONE NUMBER ONLY
+    // let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
+    // return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
+    return number
   };
 
   const rows = [
@@ -201,14 +207,14 @@ export default function Dashboard(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
+            {events.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                   {columns.map((col) => {
                     const value = row[col.field];
                     return (
                       <TableCell key={col.field} align={col.align}>
-                        {col.field === "number" ? formatNumber(value) : value}
+                          {(col.field == "phone") ? formatNumber(value) : value}
                       </TableCell>
                     );
                   })}
