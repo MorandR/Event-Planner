@@ -113,20 +113,20 @@ router.post('/login', async (req, res, next) => {
         // checks is user email exists.
         `SELECT * FROM users WHERE LOWER(email) = LOWER(${db.escape(email)});`,
         (err, result) => {
-
+            
             // if email found, check password.
             if (result.length) {
 
                 // getting user id if we get a result to later use in the token.
                 const userId = result[0].user_id
-                //console.log(userId)
+                const schoolId = result[0].school_id
 
                 bcrypt.compare(password, result[0].password, (error, response) => {
                     if (err) return res.status(400).send({error: error})
                     if (!response) return res.status(400).send({error: 'Incorrect password.'})
 
                     // correct password given. accessToken signing with the userId, email. stored as user for identification.
-                    const accessToken = sign({user_id: userId, email: email}, process.env.SECRET)
+                    const accessToken = sign({user_id: userId, email: email, school_id: schoolId}, process.env.SECRET)
                     return res.status(200).send({token: accessToken})
                 })
             }
@@ -166,6 +166,7 @@ router.get('/grabUnivNames', async (req, res, next) => {
 // creates an event given the:
 // date, description, event_name, location, phone, rating, time, typeof_event, event_owner_id
 router.put('/createEvent', validateToken, async (req, res, next) => {
+
     db.query(
         // tries to insert and also grabs university id using event_owner_id
         `INSERT INTO event_list (date, description, event_name, location, phone, rating, time, typeof_event, user_id, school_id) 
@@ -215,8 +216,9 @@ router.post('/addComment', validateToken, async (req, res, next) => {
 })
 
 router.get('/getEvents', validateToken, async (req, res, next) => {
+
     db.query(
-        `select * from event_list`,
+        `select * from event_list where school_id = '${req.body.school_id}'`,
         (err, result) => {
             if (err)
             {
