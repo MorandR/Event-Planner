@@ -12,11 +12,12 @@ const validateToken = (req, res, next) => {
     // decodes token as well as verifying it. once decoded, inserts the user_id grabbed from token. 
     try {
         const validToken = verify(accessToken, process.env.SECRET, function(err, decodedToken) {
-            if (validToken) {
-                req.user_id = decodedToken.user_id
-                req.email = decodedToken.email
-                return next();
-            }
+
+            req.body.user_id = decodedToken.user_id
+            req.body.email = decodedToken.email
+            req.body.school_id = decodedToken.school_id
+
+            return next();
         })
         
     } catch (e){
