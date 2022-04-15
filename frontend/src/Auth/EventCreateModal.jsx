@@ -165,7 +165,7 @@ export default function EventCreateModal({ modalOpen, handleClose }) {
           label=""
           name="time"
           autoComplete=""
-          type="time"
+          type="text"
           onChange={(event) => setTime(event.target.value)}
           autoFocus
         />

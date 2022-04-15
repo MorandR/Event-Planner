@@ -17,20 +17,19 @@ import {
 import { useState, useEffect} from "react";
 import EventCreateModal from "./EventCreateModal";
 import axios from "axios";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 // import CustomButton from "../UI/Button";
 
 export default function Dashboard(props) {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
   const url = `http://localhost:5000/api`;
 
-
-  // useEffect(()=>{
-  //   setLoading(true);
-  //   console.log(events)
-  // },[])
-  // Connected to the server, retreieve table info and show
+  const logOut = () => {
+    sessionStorage.removeItem("auth-token");
+    navigate("/login", { replace: true });
+  };
 
   axios
     .get(
@@ -65,21 +64,21 @@ export default function Dashboard(props) {
   const handleClose = () => setModalOpen(false);
 
   const columns = [
-    { field: "event_id", label: "ID", minwidth: 100 },
+    // { field: "event_id", label: "ID", minwidth: 100 },
     { field: "event_name", label: "Event Name", minwidth: 100 },
     { field: "location", label: "Location", minwidth: 100 },
     { field: "description", label: "Description", minwidth: 100 },
     { field: "typeof_event", label: "Category", minwidth: 100 },
     { field: "date", label: "Date", minwidth: 100 },
-    // { field: "time", label: "Time", minwidth: 100 },
+    { field: "time", label: "Time", minwidth: 100 },
     { field: "rating", label: "Rating", minwidth: 100 },
     { field: "phone", label: "Contact Number", minwidth: 100 },
   ];
 
   const formatNumber = (number) => { //format NUMBERS >> PHONE NUMBER ONLY
-    // let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
-    // return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
-    return number
+    let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
+    return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
+    // return number
   };
 
   const rows = [
@@ -170,8 +169,8 @@ export default function Dashboard(props) {
   ];
 
   return (
-    <Box sx={{ flex: 1 }}>
-      <AppBar position="static">
+    <Box sx={ {alignItems:"center" }}>
+      <AppBar  sx={{width: "100vw", alignSelf:"center"}} position={"static"}>
         <Toolbar>
           <EventCreateModal modalOpen={modalOpen} handleClose={handleClose} />
 
@@ -181,11 +180,14 @@ export default function Dashboard(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Welcome
+            Welcome to Event Planner
           </Typography>
 
-          <Button variant="contained" onClick={handleOpen}>
+          <Button variant="contained" onClick={handleOpen} sx={{marginRight:2}}>
             Create Event
+          </Button>
+          <Button variant="contained" onClick={logOut} sx={{backgroundColor:"#C11B17"}}>
+            Logout
           </Button>
         </Toolbar>
       </AppBar>

@@ -14,6 +14,7 @@ import { useState } from "react";
 import CustomButton from "../UI/Button";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import AuthPage from "./AuthPage";
 
 
 export default function LoginPage(props) {
@@ -51,6 +52,8 @@ export default function LoginPage(props) {
   };
 
   return (
+<div>
+<AuthPage/>
     <Grid
       sx={{
         height: "100vh",
@@ -60,6 +63,8 @@ export default function LoginPage(props) {
         alignItems: "center",
       }}
     >
+    
+
       <Box
         sx={{
           flexDirection: "row",
@@ -135,5 +140,6 @@ export default function LoginPage(props) {
         </Box>
       </Box>
     </Grid>
+    </div>
   );
 }

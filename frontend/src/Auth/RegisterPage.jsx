@@ -17,6 +17,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import CustomButton from "../UI/Button";
+import AuthPage from "./AuthPage";
 
 const url = `http://localhost:5000/api`
 
@@ -99,6 +100,8 @@ export default function RegisterPage(props) {
     
 
   return (
+    <div>
+         <AuthPage/>
     <Grid
       sx={{
         height: "100vh",
@@ -108,6 +111,8 @@ export default function RegisterPage(props) {
         alignItems: "center",
       }}
     >
+
+   
       <Box
         sx={{
           display: "flex",
@@ -278,5 +283,6 @@ export default function RegisterPage(props) {
         </Box>
       </Box>
     </Grid>
+    </div>
   );
 }
