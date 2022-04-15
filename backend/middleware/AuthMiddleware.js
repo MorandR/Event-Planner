@@ -15,7 +15,7 @@ const validateToken = (req, res, next) => {
 
             req.body.user_id = decodedToken.user_id
             req.body.email = decodedToken.email
-            req.body.school_id = decodedToken.school_id
+            req.body.school_id = decodedToken.school_id_user
 
             return next();
         })

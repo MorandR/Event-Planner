@@ -27,7 +27,7 @@ export default function Dashboard(props) {
   const url = `http://localhost:5000/api`;
 
   const logOut = () => {
-    sessionStorage.removeItem("auth-token");
+    sessionStorage.removeItem("accessToken");
     navigate("/login", { replace: true });
   };
 
@@ -46,11 +46,6 @@ export default function Dashboard(props) {
         //  console.log(res.data.msg);
         const eventArr = res.data.msg.map((event) => event);
         setEvents(eventArr);
-      },
-      {
-        headers: {
-          accessToken: sessionStorage.getItem("accessToken"),
-        },
       }
     )
     .catch((err) => {
