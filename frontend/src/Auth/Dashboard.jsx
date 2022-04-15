@@ -76,9 +76,14 @@ export default function Dashboard(props) {
   ];
 
   const formatNumber = (number) => { //format NUMBERS >> PHONE NUMBER ONLY
-    let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
-    return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
-    // return number
+
+    if (number.length === 9)
+    {
+      let newNumber = number.match(/^(\w{3})(\w{3})(\w{4})$/);
+      
+      return `(${newNumber[1]}) ${newNumber[2]}-${newNumber[3]}`;
+      // return number
+    }
   };
 
   const rows = [
