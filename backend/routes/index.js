@@ -193,7 +193,7 @@ router.put('/createEvent', validateToken, async (req, res, next) => {
         }
         // if we find the same time, also check if location is the same also.
         else if (result.length > 0 && locationAndTime == 1){
-            res.status(400).send({
+            return res.status(400).send({
                 message: "Can't create another event at same location and at the same time."
             });
         }
